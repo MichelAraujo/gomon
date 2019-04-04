@@ -30,6 +30,8 @@ func main() {
 			}
 		case "--path":
 			watcherPath = os.Args[i+1]
+		case "--version":
+			showVersion()
 		default:
 			buildBinary()
 		}
@@ -70,6 +72,10 @@ func main() {
 	}()
 
 	<-done
+}
+
+func showVersion() {
+	fmt.Println("Version: V1.0.0")
 }
 
 func executionAwsSam() {
