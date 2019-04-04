@@ -12,30 +12,11 @@ import (
 
 var watcher *fsnotify.Watcher
 
+const modExecutionDefault = "binary"
+
 func main() {
-	currentDir, _ := os.Getwd()
 
-	modExecution := "binary"
-	watcherPath := currentDir
-
-	for i, args := range os.Args {
-		switch args {
-		case "--mod":
-			modArg := os.Args[i+1]
-
-			switch modArg {
-			case "sam":
-				modExecution = "sam"
-				executionAwsSam()
-			}
-		case "--path":
-			watcherPath = os.Args[i+1]
-		case "--version":
-			showVersion()
-		default:
-			buildBinary()
-		}
-	}
+	modExecution, watcherPath := setParameters(os.Args)
 
 	watcher, _ = fsnotify.NewWatcher()
 	defer watcher.Close()
@@ -74,8 +55,37 @@ func main() {
 	<-done
 }
 
+func setParameters(inputArgs []string) (string, string) {
+	currentDir, _ := os.Getwd()
+
+	modExecution := modExecutionDefault
+	watcherPath := currentDir
+
+	for i, args := range inputArgs {
+		switch args {
+		case "--mod":
+			modArg := inputArgs[i+1]
+
+			switch modArg {
+			case "sam":
+				modExecution = "sam"
+				executionAwsSam()
+			case modExecutionDefault:
+				buildBinary()
+			}
+		case "--path":
+			watcherPath = inputArgs[i+1]
+		case "--version":
+			showVersion()
+		}
+	}
+
+	return modExecution, watcherPath
+}
+
 func showVersion() {
 	fmt.Println("Version: V1.0.0")
+	os.Exit(3)
 }
 
 func executionAwsSam() {
