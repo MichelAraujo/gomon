@@ -14,6 +14,14 @@ var watcher *fsnotify.Watcher
 
 const modExecutionDefault = "binary"
 
+/**
+ * GOMON - V1.0.0
+ *
+ * GNU GENERAL PUBLIC LICENSE
+ * https://github.com/MichelAraujo/gomon/blob/master/LICENSE
+ *
+ * Compiles and executes golang codes as files are changed
+ */
 func main() {
 
 	modExecution, watcherPath := setParameters(os.Args)
