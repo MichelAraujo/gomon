@@ -19,6 +19,7 @@ const modExecutionDefault = "binary"
  */
 func main() {
 	modExecution, watcherPath := setParameters(os.Args)
+	gomon.Watch(watcherPath, modExecution)
 }
 
 func setParameters(inputArgs []string) (string, string) {

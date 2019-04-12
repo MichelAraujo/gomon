@@ -1,3 +1,6 @@
 
 build:
-	go build gomon.go
+	go build -o Gomon ./main.go
+
+buildToTest: build
+	mv ./Gomon ./tests

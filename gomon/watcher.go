@@ -10,7 +10,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func watch(watcherPath string, modExecution string) {
+func Watch(watcherPath string, modExecution string) {
 	var watcher *fsnotify.Watcher
 
 	watcher, _ = fsnotify.NewWatcher()
