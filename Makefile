@@ -2,5 +2,5 @@
 build:
 	go build -o Gomon ./main.go
 
-buildToTest: build
+build_test: build
 	mv ./Gomon ./tests
