@@ -3,9 +3,7 @@ package gomon
 import (
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
-	"path/filepath"
 
 	"github.com/fsnotify/fsnotify"
 )
@@ -16,19 +14,7 @@ func Watch(watcherPath string, modExecution string) {
 	watcher, _ = fsnotify.NewWatcher()
 	defer watcher.Close()
 
-	err := filepath.Walk(
-		watcherPath,
-		func(path string, fi os.FileInfo, err error) error {
-			if fi.Mode().IsDir() {
-				return watcher.Add(path)
-			}
-
-			return nil
-		},
-	)
-	if err != nil {
-		fmt.Println("Error in add watcher path: ", err)
-	}
+	watcher.Add(watcherPath)
 
 	done := make(chan bool)
 
