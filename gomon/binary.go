@@ -7,9 +7,9 @@ import (
 )
 
 func BuildBinary() {
-	buildInfo, err := exec.Command("make", "build").CombinedOutput()
-	if err != nil {
-		log.Println("Could not execute command: ", err)
+	buildInfo, execCommandError := exec.Command("make", "build").CombinedOutput()
+	if execCommandError != nil {
+		log.Println("ERROR: ", execCommandError)
 	}
 	fmt.Println("## Build info: ", string(buildInfo))
 }

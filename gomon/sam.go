@@ -2,6 +2,7 @@ package gomon
 
 import (
 	"fmt"
+	"log"
 	"os/exec"
 )
 
@@ -14,6 +15,9 @@ func ExecutionAwsSam() {
 }
 
 func execSam() {
-	sam, _ := exec.Command("sam", "local", "start-api", "-t", "sam.yaml").CombinedOutput()
+	sam, execCommandError := exec.Command("sam", "local", "start-api", "-t", "sam.yaml").CombinedOutput()
+	if execCommandError != nil {
+		log.Println("ERROR: ", execCommandError)
+	}
 	fmt.Println(string(sam))
 }

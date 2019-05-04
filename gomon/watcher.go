@@ -10,8 +10,13 @@ import (
 
 func Watch(watcherPath string, modExecution string) {
 	var watcher *fsnotify.Watcher
+	var newWatcherError error
 
-	watcher, _ = fsnotify.NewWatcher()
+	watcher, newWatcherError = fsnotify.NewWatcher()
+	if newWatcherError != nil {
+		log.Println("ERROR: ", newWatcherError)
+	}
+
 	defer watcher.Close()
 
 	watcher.Add(watcherPath)
@@ -39,9 +44,9 @@ func Watch(watcherPath string, modExecution string) {
 					case "binary":
 						BuildBinary()
 
-						buildInfo, err := exec.Command("./main").CombinedOutput()
-						if err != nil {
-							log.Println("Could not execute command: ", err)
+						buildInfo, execCommandError := exec.Command("./main").CombinedOutput()
+						if execCommandError != nil {
+							log.Println("ERROR: ", execCommandError)
 						}
 						fmt.Println(string(buildInfo))
 					}
@@ -51,8 +56,8 @@ func Watch(watcherPath string, modExecution string) {
 					canShowOutput = true
 				}
 
-			case err := <-watcher.Errors:
-				fmt.Println("Error in execution the goroutine: ", err)
+			case watcherGoroutineError := <-watcher.Errors:
+				fmt.Println("Error in execution the goroutine: ", watcherGoroutineError)
 			}
 		}
 	}()

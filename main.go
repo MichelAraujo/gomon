@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/gomon/gomon"
@@ -23,7 +24,10 @@ func main() {
 }
 
 func setParameters(inputArgs []string) (string, string) {
-	currentDir, _ := os.Getwd()
+	currentDir, getWdError := os.Getwd()
+	if getWdError != nil {
+		log.Println("ERROR: ", getWdError.Error())
+	}
 
 	modExecution := modExecutionDefault
 	watcherPath := currentDir
